@@ -1,5 +1,6 @@
 title: 電柱 map
 description: pole map
 data_url: https://docs.google.com/spreadsheets/d/e/2PACX-1vT2MckEPG0-qEHzQg3V7csFqcA03Er8adVl_SprUIA9it7MARa_ZnS2nVOmPsQIKR971CVzRokMmHJj/pub?gid=1957425126&single=true&output=csv
+logo_image_url:
 primary_color: "#d2691e"
 orderby: distance
