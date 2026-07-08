@@ -1,4 +1,4 @@
-html, body {
+html, body, #root {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -7,10 +7,19 @@ html, body {
   -webkit-text-size-adjust: none;
 }
 
-.geolonia {
+#root {
+  background: none;
+}
+
+#root > div {
   width: 100%;
-  height: 100vh;
-  height: 100dvh;
-  margin: 0;
-  padding: 0;
+  height: 100%;
+}
+
+.loader {
+  display: none !important;
+}
+
+.github-fork-ribbon {
+  display: none !important;
 }
