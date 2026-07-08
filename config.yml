@@ -1,8 +1,5 @@
-title: Geolonia PWAマップ
-description: Google スプレッドシートを更新するだけでオリジナルの地図アプリを作成できる\n「Geolonia PWAマップ」
+title: 電柱 map
+description: pole map
 data_url: https://docs.google.com/spreadsheets/d/e/2PACX-1vT2MckEPG0-qEHzQg3V7csFqcA03Er8adVl_SprUIA9it7MARa_ZnS2nVOmPsQIKR971CVzRokMmHJj/pub?gid=1957425126&single=true&output=csv
-form_url:
-logo_image_url: https://geoloniamaps.github.io/pwamap/icon-pwamap.svg
-background_image_url: https://geoloniamaps.github.io/pwamap/geolonia_bgimage_1920_1080.png
 primary_color: "#d2691e"
 orderby: distance
