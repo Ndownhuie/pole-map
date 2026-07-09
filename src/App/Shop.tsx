@@ -17,8 +17,10 @@ const Content = (props: Props) => {
 
   const clickHandler = () => {
     props.close()
-    if(mapNode.current) {
+    if (mapNode.current) {
       mapNode.current.remove()
+    }
+    if (map) {
       map.remove()
     }
   }
@@ -36,26 +38,42 @@ const Content = (props: Props) => {
       style: `geolonia/gsi`,
     });
     setMap(nextMap)
-  }, [shop, mapNode])
+  }, [shop])
 
   const distanceTipText = makeDistanceLabelText(shop.distance)
   const category = shop['カテゴリ']
-  const content = shop['紹介文']
+  const content = shop['紹介文'] || ''
 
-  const toBreakLine = (text: string) => {
+  const renderTextWithLinks = (text: string) => {
+    const lines = text.split(/\r\n|\n|\r/g)
+    const urlRegex = /(https?:\/\/[^\s]+)/g
 
-    return text.split(/(\r\n)|(\n)|(\r)/g).map((line, i) => {
+    return lines.map((line, lineIndex) => (
+      <React.Fragment key={lineIndex}>
+        {line.split(urlRegex).map((part, partIndex) => {
+          if (part.match(urlRegex)) {
+            return (
+              <a
+                key={`${lineIndex}-${partIndex}`}
+                href={part}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: '#1a73e8', textDecoration: 'underline' }}
+              >
+                {part}
+              </a>
+            )
+          }
 
-      let result: any = '';
-
-      if (line === '\r\n' || line === '\n' || line === '\r') {
-        result = <br key={i} />
-      } else if (line !== undefined) {
-        result = line
-      }
-
-      return result
-    })
+          return (
+            <React.Fragment key={`${lineIndex}-${partIndex}`}>
+              {part}
+            </React.Fragment>
+          )
+        })}
+        {lineIndex < lines.length - 1 && <br />}
+      </React.Fragment>
+    ))
   }
 
   return (
@@ -64,7 +82,7 @@ const Content = (props: Props) => {
         <button onClick={clickHandler}><AiOutlineClose size="16px" color="#FFFFFF" /> 閉じる</button>
       </div>
       <div className="container">
-        {shop?
+        {shop ?
           <>
             <h2>{shop['スポット名']}</h2>
             <div>
@@ -73,25 +91,35 @@ const Content = (props: Props) => {
                   <span onClick={clickHandler} className="category">{category}</span>
                 </Link>
               </span>
-              <span className="nowrap">{distanceTipText && <span className="distance">現在位置から {distanceTipText}</span> }</span>
+              <span className="nowrap">{distanceTipText && <span className="distance">現在位置から {distanceTipText}</span>}</span>
             </div>
 
-            <div style={{margin: "24px 0"}}><Links data={shop} /></div>
+            <div style={{ margin: "24px 0" }}><Links data={shop} /></div>
 
-            { shop['画像'] && <img src={shop['画像']} alt={shop['スポット名']} style={{width: "100%"}} />}
+            {shop['画像'] && <img src={shop['画像']} alt={shop['スポット名']} style={{ width: "100%" }} />}
 
-            <p style={{margin: "24px 0", wordBreak: "break-all"}}>{toBreakLine(content)}</p>
+            <p style={{ margin: "24px 0", wordBreak: "break-all" }}>
+              {renderTextWithLinks(content)}
+            </p>
 
             <div
               ref={mapNode}
-              style={{width: '100%', height: '200px', marginTop: "24px"}}
+              style={{ width: '100%', height: '200px', marginTop: "24px" }}
               data-lat={shop['緯度']}
               data-lng={shop['経度']}
               data-navigation-control="off"
             ></div>
 
-            <p><a className="small" href={`http://maps.apple.com/?q=${shop['緯度']},${shop['経度']}`}>スポットまでの道順</a></p>
-
+            <p>
+              <a
+                className="small"
+                href={`http://maps.apple.com/?q=${shop['緯度']},${shop['経度']}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                スポットまでの道順
+              </a>
+            </p>
           </>
           :
           <></>
