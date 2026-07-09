@@ -44,37 +44,41 @@ const Content = (props: Props) => {
   const category = shop['カテゴリ']
   const content = shop['紹介文'] || ''
 
-  const renderTextWithLinks = (text: string) => {
-    const lines = text.split(/\r\n|\n|\r/g)
-    const urlRegex = /(https?:\/\/[^\s]+)/g
+const renderTextWithLinks = (text: string) => {
+  const lines = text.split(/\r\n|\n|\r/g)
+  const urlRegex = /(https?:\/\/[^\s]+)/g
 
-    return lines.map((line, lineIndex) => (
-      <React.Fragment key={lineIndex}>
-        {line.split(urlRegex).map((part, partIndex) => {
-          if (part.match(urlRegex)) {
-            return (
-              <a
-                key={`${lineIndex}-${partIndex}`}
-                href={part}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: '#1a73e8', textDecoration: 'underline' }}
-              >
-                {part}
-              </a>
-            )
-          }
+  return lines.map((line, lineIndex) => (
+    <React.Fragment key={lineIndex}>
+      {line.split(urlRegex).map((part, partIndex) => {
+        if (part.match(urlRegex)) {
+          const label = part.includes('google.com/maps') || part.includes('maps.google.com')
+            ? 'Googleマップを開く'
+            : 'リンクを開く'
 
           return (
-            <React.Fragment key={`${lineIndex}-${partIndex}`}>
-              {part}
-            </React.Fragment>
+            <a
+              key={`${lineIndex}-${partIndex}`}
+              href={part}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: '#1a73e8', textDecoration: 'underline' }}
+            >
+              {label}
+            </a>
           )
-        })}
-        {lineIndex < lines.length - 1 && <br />}
-      </React.Fragment>
-    ))
-  }
+        }
+
+        return (
+          <React.Fragment key={`${lineIndex}-${partIndex}`}>
+            {part}
+          </React.Fragment>
+        )
+      })}
+      {lineIndex < lines.length - 1 && <br />}
+    </React.Fragment>
+  ))
+}
 
   return (
     <div className="shop-single">
